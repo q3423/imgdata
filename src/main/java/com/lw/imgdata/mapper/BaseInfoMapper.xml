@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.imgdata.mapper.BaseInfoMapper" >
+ 
+  <sql id="Base_Column_List" >
+    id, code, create_time, syn_type, user_id, type, companyid, 
+    company ,new_city,new_name,new_type,new_level,new_phone,new_county,
+    new_gender,new_idCard,new_keeper,new_supply,new_address,new_province,new_brand,img,user_state,unit,post,new_option,final_modifier,final_modify_time,join_date,leave_date,post_type
+  </sql>
+  
+  
+  <select id="selectById" resultType="com.lw.imgdata.pojo.BaseInfo" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,JSON_UNQUOTE(json_data) json_data
+    from base_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="findByIds" resultType="com.lw.imgdata.pojo.BaseInfo" parameterType="String">
+      select new_province,  new_city,  new_county,  new_address,new_type,new_level,new_keeper,new_phone
+      from base_info
+      where id in $(ids)
+    </select>
+</mapper>

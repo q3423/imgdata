@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.imgdata.mapper.SchemeItemsMapper">
+
+	<select id="findSchemeItemsMsg" resultType="com.lw.imgdata.pojo.SchemeItemsOrderVO" parameterType="Integer">
+		SELECT
+		i.region,
+		i.district_name,
+		i.scheme_code,
+		i.id,
+		i.activity_theme,
+		i.scheme_cost_type,
+		i.cash_type,
+		i.budget_type,
+		i.benefit_obj,
+		i.execute_obj,
+		i.audit_pay,
+		i.real_pay,
+		IFNULL( i.deduct_pay, 0 ) AS deduct_pay ,
+		o.id as order_id,o.items_code_list,o.json_data as order_json_data
+		FROM
+		items i ,order_info o
+		where o.scheme_code = i.scheme_code
+		and o.id = #{orderId}
+	</select>
+
+</mapper>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.imgdata.mapper.OrderMapper">
+	
+
+	<sql id="order_info_base">
+		id,create_time,district_code,district_name,scheme_code,items_code_list,state,companyid,company,regionid,region,userId
+	</sql>
+	<sql id="order_info_alias">
+		o.id
+		,o.create_time
+		,o.district_code
+		,o.district_name
+		,o.scheme_code
+		,o.items_code_list
+		,o.state
+		,o.companyid
+		,o.company
+		,o.regionid
+		,o.region
+		,o.userId
+	</sql>
+	<!-- <select id="selectVOList" parameterType="com.lw.api.model.search.base.Search" 
+		resultMap="orderInfoVOMap"> select <include refid="order_info_base"></include> 
+		,JSON_UNQUOTE(json_data) json_data from order_info <where> <if test="schemeCode!=null"> 
+		scheme_code = #{schemeCode} </if> <if test="itemsCode!=null"> and FIND_IN_SET( 
+		#{itemsCode},items_code_list) </if> </where> ORDER BY create_time DESC <if 
+		test="start!=null and pageSize!=null"> LIMIT #{start},#{pageSize} </if> </select> -->
+<!-- resultMap="BaseResultMap"  resultType="com.lw.imgdata.pojo.Order"-->
+	<select id="selectById" parameterType="java.lang.Integer"  resultType="com.lw.imgdata.pojo.Order">
+		select
+		o.id
+		,o.create_time
+		,o.scheme_code
+		,o.companyid
+		,o.company
+		,o.regionid
+		,o.region
+		,o.json_data
+		,i.scheme_cost_type
+		,i.budget_type
+		,i.benefit_obj
+		,i.start_time
+		,i.end_time
+		from order_info o
+		LEFT JOIN order_items oi ON oi.order_id = o.id
+		LEFT JOIN items i ON i.code = oi.items_code and i.scheme_code =
+		oi.scheme_code
+		where o.id=#{id}
+	</select>
+    <select id="selectList" resultType="com.lw.imgdata.pojo.Order" parameterType="java.lang.String">
+		SELECT
+			o.id,
+			o.scheme_code,
+			o.json_data
+		FROM
+			order_info o
+		WHERE
+			o.scheme_code = #{schemeCode}
+	</select>
+
+
+</mapper>

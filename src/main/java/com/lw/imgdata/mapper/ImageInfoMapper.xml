@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.imgdata.mapper.ImageInfoMapper">
+
+	<resultMap id="BaseResultMap" type="com.lw.imgdata.pojo.ImageInfo">
+		<constructor>
+			<idArg column="image_info_id" jdbcType="BIGINT" javaType="Long" />
+			<arg column="image_message_id" jdbcType="BIGINT" javaType="Long" />
+			<arg column="upload_time" jdbcType="BIGINT" javaType="Long" />
+			<arg column="equipment_model" jdbcType="VARCHAR" javaType="String" />
+			<arg column="equipment_manufacturer" jdbcType="VARCHAR" javaType="String" />
+			<arg column="photo_op" jdbcType="BIGINT" javaType="Long" />
+			<arg column="image_fingerprint" jdbcType="VARCHAR" javaType="String" />
+			<arg column="image_url" jdbcType="VARCHAR" javaType="String" />
+			<arg column="submit_user_id" jdbcType="BIGINT" javaType="Long" />
+			<arg column="submit_user" jdbcType="VARCHAR" javaType="String" />
+		</constructor>
+	</resultMap>
+	<sql id="Base_Column_List">
+		image_info_id, image_message_id, upload_time, equipment_model,
+		equipment_manufacturer, photo_op, image_fingerprint, image_url,
+		submit_user_id, submit_user
+	</sql>
+	<select id="countByWhere" resultType="int" parameterType="java.util.Map">
+		 <![CDATA[
+			select count(1) from image_info ${whereSql}
+		]]>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="Long">
+		select
+		<include refid="Base_Column_List" />
+		from image_info
+		where
+		image_info_id=#{id}
+	</select>
+
+	<select id="searchData" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from image_info
+		<if test="whereSql != null">
+			${whereSql}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from image_info
+		where
+		image_info_id=#{id}
+	</delete>
+
+	<delete id="deleteByIds" parameterType="List">
+		delete from image_info
+		where image_info_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="imageInfoId" parameterType="com.lw.imgdata.pojo.ImageInfo">
+		insert into image_info (
+		image_message_id ,
+		upload_time ,
+		equipment_model ,
+		equipment_manufacturer ,
+		photo_op ,
+		image_fingerprint ,
+		image_url ,
+		submit_user_id ,
+		submit_user
+		)
+		values (
+		#{imageMessageId} , #{uploadTime} , #{equipmentModel} , #{equipmentManufacturer} ,
+		#{photoOp} , #{imageFingerprint} , #{imageUrl} , #{submitUserId} ,
+		#{submitUser} )
+	</insert>
+
+	<insert id="saveAll" parameterType="List">
+		insert into image_info (
+		image_message_id ,
+		upload_time ,
+		equipment_model ,
+		equipment_manufacturer ,
+		photo_op ,
+		image_fingerprint ,
+		image_url ,
+		submit_user_id ,
+		submit_user
+		)
+		values
+		<foreach collection="list" index="index" item="item" separator="," >
+			(#{item.imageMessageId} , #{item.uploadTime} , #{item.equipmentModel} ,
+			#{item.equipmentManufacturer} , #{item.photoOp} ,
+			#{item.imageFingerprint} , #{item.imageUrl} , #{item.submitUserId} ,
+			#{item.submitUser})
+		</foreach>
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.lw.imgdata.pojo.ImageInfo">
+		insert into image_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="imageMessageId != null">
+				image_message_id,
+			</if>
+			<if test="uploadTime != null">
+				upload_time,
+			</if>
+			<if test="equipmentModel != null">
+				equipment_model,
+			</if>
+			<if test="equipmentManufacturer != null">
+				equipment_manufacturer,
+			</if>
+			<if test="photoOp != null">
+				photo_op,
+			</if>
+			<if test="imageFingerprint != null">
+				image_fingerprint,
+			</if>
+			<if test="imageUrl != null">
+				image_url,
+			</if>
+			<if test="submitUserId != null">
+				submit_user_id,
+			</if>
+			<if test="submitUser != null">
+				submit_user,
+			</if>
+		</trim>
+
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="imageMessageId != null">
+				#{imageMessageId} ,
+			</if>
+			<if test="uploadTime != null">
+				#{uploadTime} ,
+			</if>
+			<if test="equipmentModel != null">
+				#{equipmentModel} ,
+			</if>
+			<if test="equipmentManufacturer != null">
+				#{equipmentManufacturer} ,
+			</if>
+			<if test="photoOp != null">
+				#{photoOp} ,
+			</if>
+			<if test="imageFingerprint != null">
+				#{imageFingerprint} ,
+			</if>
+			<if test="imageUrl != null">
+				#{imageUrl} ,
+			</if>
+			<if test="submitUserId != null">
+				#{submitUserId} ,
+			</if>
+			<if test="submitUser != null">
+				#{submitUser} ,
+			</if>
+		</trim>
+
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.lw.imgdata.pojo.ImageInfo">
+		update image_info
+		<set>
+			<if test="imageMessageId != null">
+				image_message_id=#{id},
+			</if>
+			<if test="uploadTime != null">
+				upload_time=#{id},
+			</if>
+			<if test="equipmentModel != null">
+				equipment_model=#{id},
+			</if>
+			<if test="equipmentManufacturer != null">
+				equipment_manufacturer=#{id},
+			</if>
+			<if test="photoOp != null">
+				photo_op=#{id},
+			</if>
+			<if test="imageFingerprint != null">
+				image_fingerprint=#{id},
+			</if>
+			<if test="imageUrl != null">
+				image_url=#{id},
+			</if>
+			<if test="submitUserId != null">
+				submit_user_id=#{id},
+			</if>
+			<if test="submitUser != null">
+				submit_user=#{id},
+			</if>
+		</set>
+		where image_info_id=#{imageInfoId}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.lw.imgdata.pojo.ImageInfo">
+		update image_info
+		<set>
+			image_message_id=#{imageMessageId},
+			upload_time=#{uploadTime},
+			equipment_model=#{equipmentModel},
+			equipment_manufacturer=#{equipmentManufacturer},
+			photo_op=#{photoOp},
+			image_fingerprint=#{imageFingerprint},
+			image_url=#{imageUrl},
+			submit_user_id=#{submitUserId},
+			submit_user=#{submitUser},
+		</set>
+		where
+		image_info_id=#{id}
+	</update>
+
+	<update id="updateAll" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update image_info
+			<set>
+				image_message_id=#{imageMessageId},
+				upload_time=#{uploadTime},
+				equipment_model=#{equipmentModel},
+				equipment_manufacturer=#{equipmentManufacturer},
+				photo_op=#{photoOp},
+				image_fingerprint=#{imageFingerprint},
+				image_url=#{imageUrl},
+				submit_user_id=#{submitUserId},
+				submit_user=#{submitUser},
+			</set>
+			where
+			image_info_id=#{imageInfoId}
+		</foreach>
+	</update>
+</mapper>

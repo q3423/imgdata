@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lw.imgdata.mapper.ImageMessageMapper">
+
+	<resultMap id="BaseResultMap" type="com.lw.imgdata.pojo.ImageMessage">
+		<constructor>
+			<idArg column="image_message_id" jdbcType="BIGINT" javaType="Long" />
+			<arg column="scheme_code" jdbcType="VARCHAR" javaType="String" />
+			<arg column="item_id" jdbcType="BIGINT" javaType="Long" />
+			<arg column="start_time" jdbcType="BIGINT" javaType="Long" />
+			<arg column="end_time" jdbcType="BIGINT" javaType="Long" />
+			<arg column="beneficiary" jdbcType="VARCHAR" javaType="String" />
+			<arg column="company_id" jdbcType="VARCHAR" javaType="String" />
+			<arg column="company_name" jdbcType="VARCHAR" javaType="String" />
+			<arg column="brand" jdbcType="VARCHAR" javaType="String" />
+			<arg column="region" jdbcType="VARCHAR" javaType="String" />
+			<arg column="expense_type" jdbcType="VARCHAR" javaType="String" />
+			<arg column="expense_management_type" jdbcType="VARCHAR"
+				javaType="String" />
+		</constructor>
+	</resultMap>
+	<sql id="Base_Column_List">
+		image_message_id, scheme_code, item_id, start_time, end_time, beneficiary, company_id,
+		company_name, brand, region, expense_type, expense_management_type
+	</sql>
+	<select id="countByWhere" resultType="int" parameterType="java.util.Map">
+		 <![CDATA[
+			select count(1) from image_message ${whereSql}
+		]]>
+	</select>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="Long">
+		select
+		<include refid="Base_Column_List" />
+		from image_message
+		where
+		image_message_id=#{id}
+	</select>
+
+	<select id="searchData" resultMap="BaseResultMap" parameterType="String">
+		select
+		<include refid="Base_Column_List" />
+		from image_message
+		<if test="whereSql != null">
+			${whereSql}
+		</if>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="Long">
+		delete from image_message
+		where
+		image_message_id=#{id}
+	</delete>
+
+	<delete id="deleteByIds" parameterType="List">
+		delete from image_message
+		where image_message_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="imageMessageId"
+		parameterType="com.lw.imgdata.pojo.ImageMessage">
+		insert into image_message (
+		scheme_code ,
+		item_id ,
+		start_time ,
+		end_time ,
+		beneficiary ,
+		company_id ,
+		company_name ,
+		brand ,
+		region ,
+		expense_type ,
+		expense_management_type
+		)
+		values (
+		#{schemeCode} , #{itemId} , #{startTime} , #{endTime} , #{beneficiary} ,
+		#{companyId} , #{companyName} , #{brand} , #{region} , #{expenseType}
+		, #{expenseManagementType} )
+	</insert>
+
+	<insert id="saveAll" parameterType="List">
+		insert into image_message (
+		scheme_code ,
+		item_id ,
+		start_time ,
+		end_time ,
+		beneficiary ,
+		company_id ,
+		company_name ,
+		brand ,
+		region ,
+		expense_type ,
+		expense_management_type
+		)
+		values
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item.schemeCode} , #{item.itemId} , #{item.startTime} , #{item.endTime} ,
+			#{item.beneficiary} , #{item.companyId} , #{item.companyName} ,
+			#{item.brand} , #{item.region} , #{item.expenseType} ,
+			#{item.expenseManagementType}
+		</foreach>
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.lw.imgdata.pojo.ImageMessage">
+		insert into image_message
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="schemeCode != null">
+				scheme_code,
+			</if>
+			<if test="itemId != null">
+				item_id,
+			</if>
+			<if test="startTime != null">
+				start_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="beneficiary != null">
+				beneficiary,
+			</if>
+			<if test="companyId != null">
+				company_id,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="brand != null">
+				brand,
+			</if>
+			<if test="region != null">
+				region,
+			</if>
+			<if test="expenseType != null">
+				expense_type,
+			</if>
+			<if test="expenseManagementType != null">
+				expense_management_type,
+			</if>
+		</trim>
+
+		values
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="schemeCode != null">
+				#{schemeCode} ,
+			</if>
+			<if test="itemId != null">
+				#{itemId} ,
+			</if>
+			<if test="startTime != null">
+				#{startTime} ,
+			</if>
+			<if test="endTime != null">
+				#{endTime} ,
+			</if>
+			<if test="beneficiary != null">
+				#{beneficiary} ,
+			</if>
+			<if test="companyId != null">
+				#{companyId} ,
+			</if>
+			<if test="companyName != null">
+				#{companyName} ,
+			</if>
+			<if test="brand != null">
+				#{brand} ,
+			</if>
+			<if test="region != null">
+				#{region} ,
+			</if>
+			<if test="expenseType != null">
+				#{expenseType} ,
+			</if>
+			<if test="expenseManagementType != null">
+				#{expenseManagementType} ,
+			</if>
+		</trim>
+
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.lw.imgdata.pojo.ImageMessage">
+		update image_message
+		<set>
+			<if test="schemeCode != null">
+				scheme_code=#{id},
+			</if>
+			<if test="itemId != null">
+				item_id=#{id},
+			</if>
+			<if test="startTime != null">
+				start_time=#{id},
+			</if>
+			<if test="endTime != null">
+				end_time=#{id},
+			</if>
+			<if test="beneficiary != null">
+				beneficiary=#{id},
+			</if>
+			<if test="companyId != null">
+				company_id=#{id},
+			</if>
+			<if test="companyName != null">
+				company_name=#{id},
+			</if>
+			<if test="brand != null">
+				brand=#{id},
+			</if>
+			<if test="region != null">
+				region=#{id},
+			</if>
+			<if test="expenseType != null">
+				expense_type=#{id},
+			</if>
+			<if test="expenseManagementType != null">
+				expense_management_type=#{id},
+			</if>
+		</set>
+		where image_message_id=#{imageMessageId}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.lw.imgdata.pojo.ImageMessage">
+		update image_message
+		<set>
+			scheme_code=#{schemeCode},
+			item_id=#{itemId},
+			start_time=#{startTime},
+			end_time=#{endTime},
+			beneficiary=#{beneficiary},
+			company_id=#{companyId},
+			company_name=#{companyName},
+			brand=#{brand},
+			region=#{region},
+			expense_type=#{expenseType},
+			expense_management_type=#{expenseManagementType},
+		</set>
+		where
+		image_message_id=#{id}
+	</update>
+
+	<update id="updateAll" parameterType="java.util.List">
+		<foreach collection="list" item="item" index="index" open=""
+			close="" separator=";">
+			update image_message
+			<set>
+				scheme_code=#{schemeCode},
+				item_id=#{itemId},
+				start_time=#{startTime},
+				end_time=#{endTime},
+				beneficiary=#{beneficiary},
+				company_id=#{companyId},
+				company_name=#{companyName},
+				brand=#{brand},
+				region=#{region},
+				expense_type=#{expenseType},
+				expense_management_type=#{expenseManagementType},
+			</set>
+			where
+			image_message_id=#{imageMessageId}
+		</foreach>
+	</update>
+</mapper>
